@@ -1,24 +1,25 @@
 data "azurerm_resource_group" "main_rg" {
-  name = var.rg_name
+  name = var.rg_name != null ? var.rg_name : azurerm_resource_group.rg.name
 }
 
 data "azurerm_virtual_network" "vnet" {
-  name                = var.vnet_name
+  name                = var.vnet_name != null ? var.vnet_name : azurerm_virtual_network.vnet.name
   resource_group_name = data.azurerm_resource_group.main_rg.name
 }
 
 data "azurerm_subnet" "subnet" {
-  name                 = var.subnet_name
+  # choose first available subnet if not provided by user
+  name                 = var.subnet_name != null ? var.subnet_name : azurerm_virtual_network.vnet.subnet.*.name[0]
   virtual_network_name = data.azurerm_virtual_network.vnet.name
   resource_group_name  = data.azurerm_resource_group.main_rg.name
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                = "${var.name}-aks"
+  name                = var.prefix != null ? "${var.prefix}-aks" : local.prefix
   resource_group_name = data.azurerm_resource_group.main_rg.name
   location            = data.azurerm_resource_group.main_rg.location
-  dns_prefix          = var.name
-  node_resource_group = "${var.name}-rg-worker"
+  dns_prefix          = var.prefix != null ? "${var.prefix}" : local.prefix
+  node_resource_group = var.prefix != null ? "${var.prefix}-rg-worker" : local.prefix
   kubernetes_version  = var.kubernetes_version
 
   default_node_pool {
@@ -79,6 +80,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   tags = {
-    Environment = var.name
+    Environment = var.prefix != null ? "${var.prefix}" : local.prefix
   }
 }

@@ -24,13 +24,10 @@ Both `aks` and `eks` directories contain:
 - `variables.tf` - describes inputs for AKS/EKS
 - `terraform.tfvars` - template configuration file with defaults
 
-In both cases (AKS/EKS) there are mandatory parameters that needs to be fetched from existing infrastructure state.
+In both cases (AKS/EKS) there are mandatory parameters that needs to be provided.
 
 **AKS:**
 
-- `rg_name`
-- `vnet_name`
-- `subnet_name`
 - `rsa_pub_path`
 
 **EKS:**
@@ -43,8 +40,16 @@ In both cases (AKS/EKS) there are mandatory parameters that needs to be fetched 
 
 EKS requires 2 subnets from differect AZs. If `subnet_ids` are not provided, EKS will create 2 new subnets in existing VPC.
 
-When all required parameters are in place, you can deploy AKS/EKS.
+When all required parameters are in place, you can deploy AKS/EKS. NOTEHEREABOUT using --skip-config again
 
-### 4. Using `kubeconfig` of deployed AKS/EKS in Epiphany
+### 4. Setting `kubeconfig` from deployed AKS/EKS in cluster
 
 `terraform -chdir=/workspaces/epiphany/emod/build/emod/terraform/ output kubeconfig | grep -v EOT > kubeconfig`
+1. Getting kubeconfig
+2. Setting env variable
+3. Trying connectivity
+4. Installing aws cli for EKS
+
+### 5. Applying Epiphany on top of AKS/EKS
+
+Info about apps?

@@ -1,21 +1,25 @@
-variable "name" {
-  description = "Prefix for resource names"
+variable "prefix" {
+  description = "Prefix for AKS resource names"
   type        = string
+  default     = null
 }
 
 variable "rg_name" {
   description = "Name of an resource group to deploy AKS cluster in"
   type        = string
+  default     = null
 }
 
 variable "vnet_name" {
   description = "Main Virtual Network's name"
   type        = string
+  default     = null
 }
 
 variable "subnet_name" {
   description = "Name of the existing subnet to deploy AKS cluster in"
   type        = string
+  default     = null
 }
 
 variable "rsa_pub_path" {

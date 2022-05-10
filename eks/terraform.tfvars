@@ -1,4 +1,4 @@
-name                                        = "cicharka-emod-rg"      # resource group name
+name                                        = null      # prefix used for group name
 vpc_id                                      = "vpc-0a307dd209c0810f1" # should be provided the one from epi cluster
 subnet_ids                                  = null
 region                                      = "eu-west-2"   # from epi
