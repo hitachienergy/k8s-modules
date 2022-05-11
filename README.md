@@ -4,7 +4,7 @@ Terraform modules for AKS and EKS which can be used alongside Epiphany.
 
 ## Usage
 
-AKS and EKS modules use existing resources created by Epiphany e.g. resource groups, subnets etc. Therefore first step is to create infrastructure with Epiphany, and then taking advantage of possibility to deploy custom Terraform scripts, AKS or EKS can be installed.
+AKS and EKS modules use existing resources created by Epiphany e.g. resource groups, subnets etc. First step is to create infrastructure with Epiphany.Then, taking advantage of possibility to deploy custom Terraform scripts with Epiphany - AKS or EKS can be installed. Finally, after obtaining kubeconfig from Kubernetess service, it is possible to deploy Epiphany apps on top of the cluster.
 
 ### 1. Creating Epiphany cluster infrastructure
 
@@ -22,13 +22,15 @@ Before applying the configuration, parameters related to the AKS/EKS needs to be
 Both `aks` and `eks` directories contain:
 
 - `variables.tf` - describes inputs for AKS/EKS
-- `terraform.tfvars` - template configuration file with defaults
+- `terraform.tfvars` - template configuration file used to provide input variables
 
-In both cases (AKS/EKS) there are mandatory parameters that needs to be provided.
+In both cases (AKS/EKS) there are mandatory parameters that needs to be provided. You can find them via cloud provider dashboard or by inspecting terrafrom state file in your cluster - `/shared/build/clustername/terraform/terraform.tfstate`.
 
 **AKS:**
 
 - `rsa_pub_path`
+
+*Note:* Parameters that have default values set in `variables.tf` are automatically fetched from existing infrastructure. However, it doesn't prevent you from applying these values manually.
 
 **EKS:**
 
@@ -38,18 +40,26 @@ In both cases (AKS/EKS) there are mandatory parameters that needs to be provided
 - `private_route_table_id`
 - `ec2_ssh_key`
 
-EKS requires 2 subnets from differect AZs. If `subnet_ids` are not provided, EKS will create 2 new subnets in existing VPC.
+*Note:* EKS requires 2 subnets from differect AZs. If `subnet_ids` are not provided, EKS will create 2 new subnets in existing VPC.
 
-When all required parameters are in place, you can deploy AKS/EKS. NOTEHEREABOUT using --skip-config again
+When all required parameters are in place, you can deploy AKS/EKS with `epicli`.
 
-### 4. Setting `kubeconfig` from deployed AKS/EKS in cluster
+*Note:* If you plan to deploy some Epiphany apps in AKS/EKS cluster, make sure that flag `--skip-config` is set. During Epiphany Ansible provisioning, `kubeconfig` from AKS/EKS lets Epiphany to connect and configure your cluster.
 
-`terraform -chdir=/workspaces/epiphany/emod/build/emod/terraform/ output kubeconfig | grep -v EOT > kubeconfig`
-1. Getting kubeconfig
-2. Setting env variable
-3. Trying connectivity
-4. Installing aws cli for EKS
+### 4. Getting `kubeconfig` from deployed AKS/EKS
+
+In order to fetch kubeconfig from Terraform output variable to a file, you can use command:
+
+```shell
+terraform -chdir=/shared/build/clustername/terraform/ output kubeconfig | grep -v EOT > kubeconfig`
+```
+
+With kubeconfig set in your environment you can now connect and operate on your cluster.
+
+*Note:* Connectivity to EKS with kubeconfig from command line requires AWS cli tool. See [EKS userguide](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html) to learn more.
 
 ### 5. Applying Epiphany on top of AKS/EKS
 
-Info about apps?
+1. Put `kubeconfig` in Epiphany cluster build directory - `/shared/build/clustername/kubeconfig`
+2. Specify kubeconfig file - `export KUBECONFIG=/shared/build/clustername/kubeconfig`
+3. Re-apply Epiphany with `epicli` - use flag `--no-infra` since infrastructure is already provisioned
