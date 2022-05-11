@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     kubernetes = {
-      version = "1.13.4"
+      version = "2.11.0"
     }
 
     helm = {
