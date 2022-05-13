@@ -4,12 +4,61 @@ Terraform modules for AKS and EKS which can be used alongside Epiphany.
 
 ## Usage
 
-AKS and EKS modules use existing resources created by Epiphany e.g. resource groups, subnets etc. First step is to create infrastructure with Epiphany.Then, taking advantage of possibility to deploy custom Terraform scripts with Epiphany - AKS or EKS can be installed. Finally, after obtaining kubeconfig from Kubernetess service, it is possible to deploy Epiphany apps on top of the cluster.
+### Introduction
+
+AKS and EKS modules use existing resources created by Epiphany e.g. resource groups, subnets etc. First step is to create infrastructure with Epiphany.Then, taking advantage of possibility to deploy custom Terraform scripts with Epiphany - AKS or EKS can be installed. Finally, after obtaining kubeconfig from Kubernetess service, it is possible to deploy Epiphany apps on top of that cluster.
 
 ### 1. Creating Epiphany cluster infrastructure
 
 Follow documentation from [Epiphany](https://github.com/epiphany-platform/epiphany) in order to create infrastructure.
-Prefereable way at this point is to create Epiphany cluster without ansible provisioning, which means applying with `--skip-config` flag set - see `epicli apply -h` to learn more.
+Prefereable way at this point is to create Epiphany cluster without ansible provisioning, which means applying with `--skip-config` flag set - see `epicli apply -h` to learn more. Note that usage of AKS/EKS assumes that your infrastructure will not include kubernetes machines - Epiphany do not support managing both services withing one cluster.
+
+Basic configuration example:
+
+  ```yaml
+  kind: epiphany-cluster
+  title: Epiphany cluster Config
+  name: default
+  provider: azure
+  specification:
+    name: your-cluster-name
+    admin_user:
+      name: operations # <----- make sure os-user is correct
+      key_path: /tmp/shared/vms_rsa # <----- use generated key file
+    cloud:
+      k8s_as_cloud_service: true # <----- make sure that flag is set, as it indicates usage of a managed Kubernetes service
+    components:
+      repository:
+        count: 1
+      kubernetes_master:
+        count: 0
+      kubernetes_node:
+        count: 0
+      logging:
+        count: 0
+      monitoring:
+        count: 0
+      kafka:
+        count: 0
+      postgresql:
+        count: 1
+      load_balancer:
+        count: 0
+      rabbitmq:
+        count: 0
+  ---
+```
+
+Please ensure that you supply correct user for your cloud provider:
+
+```yaml
+Azure:
+    redhat: ec2-user
+    ubuntu: operations
+AWS:
+    redhat: ec2-user
+    ubuntu: ubuntu
+```
 
 ### 2. Re-using Terraform modules for AKS/EKS
 
