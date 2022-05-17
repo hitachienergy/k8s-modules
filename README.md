@@ -73,7 +73,8 @@ Both `aks` and `eks` directories contain:
 - `variables.tf` - describes inputs for AKS/EKS
 - `terraform.tfvars` - template configuration file used to provide input variables
 
-In both cases (AKS/EKS) there are mandatory parameters that needs to be provided. You can find them via cloud provider dashboard or by inspecting terrafrom state file in your cluster - `/shared/build/clustername/terraform/terraform.tfstate`.
+In both cases (AKS/EKS) there are mandatory parameters that needs to be provided. For values which are going to be reused from existing Epiphany
+cluster, you can find them via cloud provider dashboard or by inspecting terrafrom state file in your cluster - `/shared/build/clustername/terraform/terraform.tfstate`.
 
 **AKS:**
 

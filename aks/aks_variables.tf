@@ -1,7 +1,12 @@
 variable "prefix" {
-  description = "Prefix for AKS resource names"
+  description = "Prefix for AKS resource names. If no prefix provided, one from Epiphany cluster will be used"
   type        = string
   default     = null
+
+  validation {
+    condition     = length(var.prefix) <= 45
+    error_message = "Error: Prefix is too long. Prefix should have less than 46 characters."
+  }
 }
 
 variable "rg_name" {
