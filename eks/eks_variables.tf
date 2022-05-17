@@ -8,6 +8,11 @@ variable "name" {
   description = "Prefix for resource names"
   type        = string
   default     = "default"
+
+  validation {
+    condition     = length(var.name) < 44
+    error_message = "Error: Prefix name is too long. Prefix name should have less than 44 characters."
+  }
 }
 
 variable "k8s_version" {
