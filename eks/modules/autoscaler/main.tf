@@ -57,7 +57,7 @@ resource "helm_release" "cluster-autoscaler" {
     value = var.autoscaler_scale_down_utilization_threshold
   }
   set {
-    name  = "rbac.serviceAccountAnnotations.eks\\.amazonaws\\.com/role-arn"
+    name  = "rbac.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
     type  = "string"
     value = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${aws_iam_role.cluster_autoscaler.name}"
   }
