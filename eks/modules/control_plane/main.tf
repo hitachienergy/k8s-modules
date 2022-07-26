@@ -39,7 +39,7 @@ resource "aws_cloudwatch_log_group" "eks_log_group" {
 
 resource "aws_eks_cluster" "eks_cluster" {
   name                      = var.name
-  version                   = var.k8s_version
+  version                   = var.kubernetes_version
   role_arn                  = aws_iam_role.eks_cluster_iam_role.arn
   enabled_cluster_log_types = ["api", "audit"]
   tags                      = local.tags
