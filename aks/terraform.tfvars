@@ -1,4 +1,4 @@
-prefix                = null
+prefix                = null  # must-have value
 rg_name               = null
 vnet_name             = null
 subnet_name           = null
