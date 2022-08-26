@@ -6,7 +6,7 @@ Terraform modules for AKS and EKS which can be used alongside Epiphany.
 
 ### Introduction
 
-AKS and EKS modules use existing resources created by Epiphany e.g. resource groups, subnets etc. First step is to create infrastructure with Epiphany. Then, taking advantage of possibility to deploy custom Terraform scripts with Epiphany - AKS or EKS can be installed. Finally, after obtaining kubeconfig from Kubernetess service, it is possible to deploy Epiphany apps on top of that cluster.
+AKS and EKS modules use existing resources created by Epiphany e.g. resource groups, subnets etc. First step is to create infrastructure with Epiphany. Then, taking advantage of possibility to deploy custom Terraform scripts with Epiphany - AKS or EKS can be installed. Finally, after obtaining kubeconfig from Kubernetes service, it is possible to deploy Epiphany apps on top of that cluster.
 
 ### 1. Creating Epiphany cluster infrastructure
 
