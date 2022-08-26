@@ -3,8 +3,8 @@ variable "prefix" {
   type        = string
 
   validation {
-    condition     = length(var.prefix) >= 3 && length(var.prefix) <= 45
-    error_message = "Error: Prefix is too short or too long. Prefix should have more than 2 and less than 46 characters."
+    condition     = length(var.prefix) >= 2 && length(var.prefix) <= 45
+    error_message = "Error: Prefix is too short or too long. Prefix should have at least 2 and less than 46 characters."
   }
 }
 
