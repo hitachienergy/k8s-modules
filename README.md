@@ -99,7 +99,7 @@ In both cases (AKS/EKS) there are mandatory parameters of existing infrastructur
 
 ##### Veryfing parameters with default values
 
-By default Epiphany provides default values for most parameters, e.g. `kubernetes_version` or `autoscaler_version`, but also `auto_scaler_profile` or `worker_groups`. These values are tested by Epiphany team, so changing them requires knowledge about both AKS/EKS.
+Epiphany provides default values for most parameters, e.g. `kubernetes_version` or `autoscaler_version`, but also `auto_scaler_profile` or `worker_groups`. These values are tested by Epiphany team, so changing them requires knowledge about both AKS/EKS.
 Also, some of the parameters may differ depending on your region, e.g. for `kubernetes_version`. Please verify that values used in your configuration match criteria of your cloud provider and region.
 
 Example for `kubernetes_version` - you can check available AKS versions by running command:
